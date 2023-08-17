@@ -1,18 +1,21 @@
 import './App.css';
-import Navbar from './components/navbar/Navbar';
-import Banner from './components/banner/Banner';
-import Split from './components/split/Split';
-import Feedback from './components/feedback/Feedback';
-import Footer from './components/footer/Footer';
+import Home from './pages/Home';
+import Quote from './pages/Quote';
+import Product from './pages/Product';
+import Resturant from './pages/Resturant';
+import About from './pages/About';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
    <>
-     <Navbar />
-     <Banner />
-     <Split />
-     <Feedback />
-     <Footer />
+     <Routes >
+      <Route path='/' element={<Home />} />
+      <Route path='/quote' element={<Quote />} />
+      <Route path='/resturant' element={<Resturant />} />
+      <Route path='/product' element={<Product />} />
+      <Route path='/about' element={<About />} />
+     </Routes>
    </>
   );
 }
