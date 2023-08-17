@@ -3,11 +3,6 @@ import React from 'react'
 const Banner = () => {
   return (
     <div>
-      <!--
-  Heads up! 👋
-
-  This component comes with some `rtl` classes. Please remove them if they are not needed in your project.
--->
 
 <section
   class="relative bg-[url(https://images.unsplash.com/photo-1604014237800-1c9102c219da?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80)] bg-cover bg-center bg-no-repeat"
@@ -24,7 +19,7 @@ const Banner = () => {
         Let us find your
 
         <strong class="block font-extrabold text-rose-700">
-          Forever Home.
+          Forever Food.
         </strong>
       </h1>
 
@@ -38,14 +33,14 @@ const Banner = () => {
           href="#"
           class="block w-full rounded bg-rose-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-rose-700 focus:outline-none focus:ring active:bg-rose-500 sm:w-auto"
         >
-          Get Started
+          Search Now
         </a>
 
         <a
           href="#"
           class="block w-full rounded bg-white px-12 py-3 text-sm font-medium text-rose-600 shadow hover:text-rose-700 focus:outline-none focus:ring active:text-rose-500 sm:w-auto"
         >
-          Learn More
+           Know more
         </a>
       </div>
     </div>
