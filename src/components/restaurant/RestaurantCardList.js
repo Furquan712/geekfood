@@ -4,51 +4,44 @@ import jsonData from '../../constants/restaurant.json';
 
 const RestaurantCardList = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [minRating, setminRating ] = useState(0);
-
-  const handleRatingChange = (event) => {
-    setminRating(+ event.target.value);
-  }
+  const [minRating, setMinRating] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-    console.log(event.target.value)
+    setCurrentPage(1); // Reset to the first page when searching
   };
 
-  const filteredRestaurants = jsonData.restaurants.filter((restaurant) =>
-    restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) && restaurant.rating >= minRating
+  const handleRatingChange = (event) => {
+    setMinRating(Number(event.target.value));
+    setCurrentPage(1); // Reset to the first page when changing rating
+  };
+
+  const itemsPerPage = 24;
+  const filteredRestaurants = jsonData.restaurants.filter(
+    (restaurant) =>
+      restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      restaurant.rating >= minRating
   );
 
-  // Number of items per page and number of visible page links
-  const itemsPerPage = 24;
-  const visiblePageLinks = 5;
-
-  // Calculate the total number of pages
   const totalPages = Math.ceil(filteredRestaurants.length / itemsPerPage);
-
-  // Pagination logic
-  const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  // Calculate the range of visible page links
-  const startPage =
-    currentPage <= Math.floor(visiblePageLinks / 2)
-      ? 1
-      : currentPage - Math.floor(visiblePageLinks / 2);
+  const maxVisiblePages = 5;
+  let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+  const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
 
-  const endPage =
-    startPage + visiblePageLinks - 1 > totalPages
-      ? totalPages
-      : startPage + visiblePageLinks - 1;
+  if (endPage - startPage + 1 < maxVisiblePages) {
+    startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+  }
 
   const visiblePageRange = Array.from({ length: endPage - startPage + 1 }).map(
     (_, index) => startPage + index
   );
 
-  // Calculate the index range of visible restaurants
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const visibleRestaurants = filteredRestaurants.slice(startIndex, endIndex);
@@ -89,83 +82,81 @@ const RestaurantCardList = () => {
           </div>
         ))}
       </div>
-      <div className='my-8'>
+      <div className="flex justify-center gap-1 text-xs font-medium mt-4">
       <ol className="flex justify-center gap-1 text-xs font-medium mt-4">
-      <li>
-        <a
-          href="#"
-          className={`inline-flex h-8 w-8 items-center justify-center rounded border ${
-            currentPage === 1
-              ? 'bg-gray-200 text-gray-400'
-              : 'bg-white text-gray-900'
-          } rtl:rotate-180`}
-          onClick={(e) => {
-            e.preventDefault();
-            handlePageChange(currentPage - 1);
-          }}
-          disabled={currentPage === 1}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </a>
-      </li>
-      {visiblePageRange.map((page) => (
-        <li key={page}>
+        <li>
           <a
             href="#"
-            className={`block h-8 w-8 rounded border ${
-              currentPage === page
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-900'
-            } text-center leading-8`}
+            className={`inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 ${
+              currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+            }`}
             onClick={(e) => {
               e.preventDefault();
-              handlePageChange(page);
+              if (currentPage > 1) {
+                handlePageChange(currentPage - 1);
+              }
             }}
           >
-            {page}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
           </a>
         </li>
-      ))}
-      <li>
-        <a
-          href="#"
-          className={`inline-flex h-8 w-8 items-center justify-center rounded border ${
-            currentPage === totalPages
-              ? 'bg-gray-200 text-gray-400'
-              : 'bg-white text-gray-900'
-          }`}
-          onClick={(e) => {
-            e.preventDefault();
-            handlePageChange(currentPage + 1);
-          }}
-          disabled={currentPage === totalPages}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
-            viewBox="0 0 20 20"
-            fill="currentColor"
+        {visiblePageRange.map((page) => (
+          <li key={page}>
+            <a
+              href="#"
+              className={`block h-8 w-8 rounded border ${
+                currentPage === page
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-900'
+              } text-center leading-8 cursor-pointer`}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(page);
+              }}
+            >
+              {page}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="#"
+            className={`inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 ${
+              currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+            }`}
+            onClick={(e) => {
+              e.preventDefault();
+              if (currentPage < totalPages) {
+                handlePageChange(currentPage + 1);
+              }
+            }}
           >
-            <path
-              fillRule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </a>
-      </li>
-    </ol>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </a>
+        </li>
+      </ol>
       </div>
     </div>
   );
