@@ -2,9 +2,9 @@ import './App.css';
 import Home from './pages/Home';
 import Quote from './pages/Quote';
 import Product from './pages/Product';
-import Resturant from './pages/Resturant';
-import About from './pages/About';
+import About from './pages/Contact';
 import { Routes, Route } from 'react-router-dom';
+import Resturant from './pages/Restaurant';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
      <Routes >
       <Route path='/' element={<Home />} />
       <Route path='/quote' element={<Quote />} />
-      <Route path='/resturant' element={<Resturant />} />
+      <Route path='/restaurant' element={<Resturant />} />
       <Route path='/product' element={<Product />} />
       <Route path='/about' element={<About />} />
      </Routes>

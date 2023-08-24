@@ -1,22 +1,12 @@
 import React from 'react';
 import { FaStar, FaUtensils, FaMapMarkerAlt } from 'react-icons/fa';
 
-const RestaurantCard = () => {
-  const restaurantData = {
-    URL: "http://www.just-eat.co.uk/restaurants-cn-chinese-cardiff/menu",
-    address: "228 City Road",
-    addressLine2: "Cardiff",
-    name: ".CN Chinese",
-    outcode: "CF24",
-    postcode: "3JH",
-    rating: 5,
-    type_of_food: "Chinese"
-  };
-
+const RestaurantCard = ({ restaurantData }) => {
   return (
-    <div className="max-w-md mx-auto rounded-lg overflow-hidden shadow-md bg-white mt-24">
+    <div className="max-w-md mx-auto rounded-lg overflow-hidden shadow-md bg-white">
       {/* Front of the Card */}
-     
+    
+
       <div className="px-6 py-4">
         <div className="flex items-center mb-2">
           <h2 className="text-gray-800 font-semibold text-xl">{restaurantData.name}</h2>
@@ -26,7 +16,7 @@ const RestaurantCard = () => {
             ))}
           </div>
         </div>
-        <p className="text-gray-600 text-sm mb-2"><FaMapMarkerAlt className="inline mr-1" /> {restaurantData.address}, {restaurantData.addressLine2}</p>
+        <p className="text-gray-600 text-sm mb-2"><FaMapMarkerAlt className="inline mr-1" /> {restaurantData.address}, {restaurantData["address line 2"]}</p>
         <p className="text-gray-600 text-sm mb-4">{restaurantData.outcode} {restaurantData.postcode}</p>
       </div>
 
